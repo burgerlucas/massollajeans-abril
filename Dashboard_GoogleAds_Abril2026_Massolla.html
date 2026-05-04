@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Massolla Jeans · Google Ads · Abril 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0F2044;
+    --navy-mid: #1A3461;
+    --blue: #2563EB;
+    --blue-light: #DBEAFE;
+    --green: #16A34A;
+    --green-light: #DCFCE7;
+    --amber: #D97706;
+    --amber-light: #FEF3C7;
+    --text: #0F172A;
+    --text-mid: #475569;
+    --text-soft: #94A3B8;
+    --border: #E2E8F0;
+    --surface: #F8FAFC;
+    --white: #FFFFFF;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    background: var(--navy);
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .topbar-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: 0.01em;
+  }
+  .topbar-brand span { color: #93C5FD; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; margin-left: 12px; opacity: 0.8; }
+  .topbar-period {
+    font-size: 12px;
+    color: #93C5FD;
+    background: rgba(255,255,255,0.08);
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  /* LAYOUT */
+  .main { max-width: 1100px; margin: 0 auto; padding: 2rem 2rem 3rem; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    margin-top: 2rem;
+  }
+  .section-label:first-of-type { margin-top: 0; }
+
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-bottom: 0;
+  }
+  .kpi {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 16px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--border);
+    border-radius: 14px 14px 0 0;
+  }
+  .kpi.accent::before { background: var(--blue); }
+  .kpi.win::before { background: var(--green); }
+  .kpi-icon { font-size: 16px; margin-bottom: 8px; }
+  .kpi-label { font-size: 10px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+  .kpi-value { font-size: 24px; font-weight: 600; color: var(--text); line-height: 1; }
+  .kpi.win .kpi-value { color: var(--green); }
+  .kpi-note { font-size: 11px; color: var(--text-soft); margin-top: 4px; }
+  .kpi.win .kpi-note { color: var(--green); font-weight: 500; }
+
+  /* WIN CARD */
+  .win-card {
+    background: linear-gradient(135deg, #052e16, #14532d);
+    border-radius: 14px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .win-left h2 { font-family: 'DM Serif Display', serif; font-size: 26px; color: #fff; margin-bottom: 4px; }
+  .win-left p { font-size: 13px; color: #86EFAC; }
+  .win-right { text-align: right; }
+  .win-roas { font-size: 48px; font-weight: 600; color: #4ADE80; line-height: 1; font-family: 'DM Serif Display', serif; }
+  .win-roas-label { font-size: 12px; color: #86EFAC; margin-top: 2px; }
+  .win-detail { font-size: 11px; color: rgba(134,239,172,0.7); margin-top: 4px; }
+
+  /* CHARTS ROW */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr;
+    gap: 12px;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 14px;
+  }
+  .chart-container { position: relative; width: 100%; }
+  .legend { display: flex; gap: 14px; margin-bottom: 10px; }
+  .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-soft); }
+  .leg-sq { width: 9px; height: 9px; border-radius: 2px; }
+  .leg-line { width: 18px; height: 2px; border-top: 2px dashed #94A3B8; }
+
+  /* BOTTOM ROW */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .city-item { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .city-name { font-size: 12px; color: var(--text-mid); width: 110px; flex-shrink: 0; text-align: right; }
+  .bar-bg { flex: 1; background: var(--surface); border-radius: 4px; height: 16px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+  .bar-num { font-size: 11px; color: var(--text-soft); width: 50px; text-align: right; flex-shrink: 0; }
+
+  /* INSIGHTS */
+  .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .insight {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .insight-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .insight-icon.green { background: var(--green-light); }
+  .insight-icon.blue  { background: var(--blue-light); }
+  .insight-icon.amber { background: var(--amber-light); }
+  .insight-body h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .insight-body p  { font-size: 12px; color: var(--text-mid); line-height: 1.55; }
+
+  /* FOOTER */
+  .footer { text-align: center; font-size: 11px; color: var(--text-soft); margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+    .charts-row, .bottom-row, .insights-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .topbar { padding: 0 1rem; }
+    .main { padding: 1rem 1rem 2rem; }
+    .win-card { flex-direction: column; gap: 16px; }
+    .win-right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">Massolla Jeans <span>Google Ads Dashboard</span></div>
+  <div class="topbar-period">Abril 2026 · 01/04 – 30/04</div>
+</div>
+
+<div class="main">
+
+  <!-- WIN CARD -->
+  <div class="section-label" style="margin-top:1.5rem;">Marco do mês</div>
+  <div class="win-card">
+    <div class="win-left">
+      <h2>🎉 Primeira Venda pelo Site!</h2>
+      <p>A Massolla Jeans realizou sua primeira venda online em abril de 2026 — um marco histórico para o negócio.</p>
+    </div>
+    <div class="win-right">
+      <div class="win-roas">R$ 700</div>
+      <div class="win-roas-label">receita gerada</div>
+      <div class="win-detail">ROAS 1,45x · R$481 investidos</div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="section-label">Principais métricas — Abril</div>
+  <div class="kpi-grid">
+    <div class="kpi accent">
+      <div class="kpi-label">Impressões</div>
+      <div class="kpi-value">16.935</div>
+      <div class="kpi-note">exibições do anúncio</div>
+    </div>
+    <div class="kpi accent">
+      <div class="kpi-label">Cliques</div>
+      <div class="kpi-value">1.005</div>
+      <div class="kpi-note">visitas ao site</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">CTR</div>
+      <div class="kpi-value">5,9%</div>
+      <div class="kpi-note">taxa de clique</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">CPC médio</div>
+      <div class="kpi-value">R$ 0,48</div>
+      <div class="kpi-note">por visita</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Investimento</div>
+      <div class="kpi-value">R$ 481</div>
+      <div class="kpi-note">total no mês</div>
+    </div>
+    <div class="kpi win">
+      <div class="kpi-label">Receita</div>
+      <div class="kpi-value">R$ 700</div>
+      <div class="kpi-note">1ª venda online ✓</div>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="section-label">Evolução ao longo do mês</div>
+  <div class="charts-row">
+    <div class="card">
+      <div class="card-title">Cliques e custo diário</div>
+      <div class="legend">
+        <span class="leg"><span class="leg-sq" style="background:#2563EB;"></span>Cliques</span>
+        <span class="leg"><span class="leg-line"></span>Custo R$</span>
+      </div>
+      <div class="chart-container" style="height:200px;">
+        <canvas id="timeChart" role="img" aria-label="Gráfico de cliques e custo diário em abril de 2026"></canvas>
+      </div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;">
+      <div class="card-title">Dias ativos na campanha</div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:8px 0;">
+        <div>
+          <div style="font-size:11px;color:var(--text-soft);margin-bottom:3px;">Campanha rodou</div>
+          <div style="font-size:36px;font-weight:600;color:var(--text);line-height:1;">23 dias</div>
+          <div style="font-size:11px;color:var(--text-soft);">de 30 no mês</div>
+        </div>
+        <div style="height:1px;background:var(--border);"></div>
+        <div>
+          <div style="font-size:11px;color:var(--text-soft);margin-bottom:3px;">Melhor dia</div>
+          <div style="font-size:22px;font-weight:600;color:var(--blue);">11/04</div>
+          <div style="font-size:11px;color:var(--text-soft);">116 cliques · R$35,18</div>
+        </div>
+        <div style="height:1px;background:var(--border);"></div>
+        <div>
+          <div style="font-size:11px;color:var(--text-soft);margin-bottom:3px;">Maior cobertura</div>
+          <div style="font-size:22px;font-weight:600;color:var(--blue);">16/04</div>
+          <div style="font-size:11px;color:var(--text-soft);">2.043 impressões</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="section-label">Alcance e anúncios</div>
+  <div class="bottom-row">
+    <div class="card">
+      <div class="card-title">Cidades com mais impressões</div>
+      <div id="cities"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Anúncios com mais cliques</div>
+      <div class="chart-container" style="height:230px;">
+        <canvas id="adChart" role="img" aria-label="Ranking de anúncios por cliques"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="section-label">Análise e próximos passos</div>
+  <div class="insights-grid">
+    <div class="insight">
+      <div class="insight-icon green">🚀</div>
+      <div class="insight-body">
+        <h4>ROAS positivo logo no 1º mês</h4>
+        <p>Com R$700 de receita para R$481 investidos, o retorno já superou o investimento — excelente resultado para uma campanha em fase inicial.</p>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-icon blue">📍</div>
+      <div class="insight-body">
+        <h4>Campinas domina o alcance</h4>
+        <p>62% das impressões vieram de Campinas, seguida por Sumaré (14%) e Americana (5%). A região de revendedores está bem coberta.</p>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-icon blue">🎯</div>
+      <div class="insight-body">
+        <h4>Anúncios focados no revendedor performam melhor</h4>
+        <p>"Jeans Atacado p/ Revendedor" e "Catálogo p/ Lojistas" lideram em cliques — confirmando que o público certo está sendo atingido.</p>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-icon amber">📈</div>
+      <div class="insight-body">
+        <h4>Próximo passo: expandir e converter mais</h4>
+        <p>Com 1.005 visitantes atraídos em abril, a prioridade para maio é remarketing para reimpactar quem visitou mas ainda não comprou.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Massolla Jeans · Google Ads · Período: 01/04/2026 – 30/04/2026 · Relatório gerado em maio de 2026
+  </div>
+</div>
+
+<script>
+const labels = ['8/4','9/4','10/4','11/4','12/4','13/4','14/4','15/4','16/4','17/4','18/4','19/4','20/4','21/4','22/4','23/4','25/4','26/4','27/4','29/4','30/4'];
+const clicks = [38,70,13,116,44,115,72,24,79,59,60,48,55,34,61,47,1,54,64,20,31];
+const costs  = [12.85,40,7.47,35.18,11.9,28.32,30.22,9.87,32.1,16.68,24.13,17.83,22.13,12.73,28.63,18.72,0.07,39.99,37.53,13.91,40.26];
+
+new Chart(document.getElementById('timeChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [
+      {
+        label: 'Cliques',
+        data: clicks,
+        backgroundColor: '#BFDBFE',
+        borderColor: '#2563EB',
+        borderWidth: 1.5,
+        borderRadius: 3,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Custo (R$)',
+        data: costs,
+        type: 'line',
+        borderColor: '#94A3B8',
+        borderWidth: 1.5,
+        borderDash: [4,3],
+        pointRadius: 2,
+        pointBackgroundColor: '#94A3B8',
+        backgroundColor: 'transparent',
+        yAxisID: 'y2'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+    scales: {
+      x: { ticks: { font: { size: 10 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 14 }, grid: { display: false }, border: { display: false } },
+      y: { position: 'left', ticks: { font: { size: 10 } }, grid: { color: '#F1F5F9' }, border: { display: false } },
+      y2: { position: 'right', ticks: { font: { size: 10 }, callback: v => 'R$'+v }, grid: { drawOnChartArea: false }, border: { display: false } }
+    }
+  }
+});
+
+const cities = [
+  { name: 'Campinas', val: 10506 },
+  { name: 'Sumaré', val: 2307 },
+  { name: 'Americana', val: 817 },
+  { name: 'Araras', val: 687 },
+  { name: 'Piracicaba', val: 679 },
+  { name: 'Limeira', val: 558 },
+  { name: 'Sta. Bárbara', val: 273 },
+  { name: 'Capivari', val: 227 },
+];
+const maxV = cities[0].val;
+const paleta = ['#1D4ED8','#2563EB','#3B82F6','#60A5FA','#93C5FD','#BFDBFE','#DBEAFE','#EFF6FF'];
+const cont = document.getElementById('cities');
+cities.forEach((c, i) => {
+  const pct = Math.round(c.val / maxV * 100);
+  const div = document.createElement('div');
+  div.className = 'city-item';
+  div.innerHTML = `<div class="city-name">${c.name}</div><div class="bar-bg"><div class="bar-fill" style="width:0%;background:${paleta[i]};" data-pct="${pct}"></div></div><div class="bar-num">${c.val.toLocaleString('pt-BR')}</div>`;
+  cont.appendChild(div);
+});
+setTimeout(() => {
+  document.querySelectorAll('.bar-fill').forEach(el => el.style.width = el.dataset.pct + '%');
+}, 200);
+
+new Chart(document.getElementById('adChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Jeans Atacado\np/ Revendedor', 'Encontre\nseu Estilo', 'Seja Revendedor\nMassolla', 'Catálogo\np/ Lojistas', 'Qualidade\ne Estilo'],
+    datasets: [{
+      data: [220, 152, 111, 104, 95],
+      backgroundColor: ['#1D4ED8','#2563EB','#3B82F6','#60A5FA','#93C5FD'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: '#F1F5F9' }, border: { display: false } },
+      y: { ticks: { font: { size: 10 } }, grid: { display: false }, border: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
